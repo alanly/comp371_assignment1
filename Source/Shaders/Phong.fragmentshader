@@ -1,0 +1,64 @@
+#version 330 core
+
+
+// Light and Material Uniform Variables
+uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
+
+uniform vec3 lightColor;
+uniform vec3 lightAttenuation; // x: kC  y: kL  z: kQ
+
+
+// Inputs
+in vec3 v_color;		 // vertex color: also diffuse color
+
+in vec3 normal;          // Transformed normal in View Space
+in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
+in vec4 lightVector;     // Vector from the vertex to the Light in View Space
+						 // Length of lightVector is the distance between light and vertex
+						 // if w = 1: Point light, if w = 0: directional light
+
+// Ouput data
+out vec3 color;
+
+
+void main()
+{
+	// Implment Phong Shading based on the parameters above
+	// Remember that directional light don't have attenuation
+	
+	//color = v_color;
+
+	// Prepare some values,
+	float lightDistance   = length(vec3(lightVector));
+	vec3  lightDirection  = normalize(vec3(lightVector)); // Direction of light
+	vec3  normalDirection = normalize(normal);
+	vec3  eyeDirection    = normalize(eyeVector);
+
+	// Determine our attenuation factor,
+	float fAttenuation = 1.0f;
+
+	if (lightVector.w == 1) // Only calculate attenuation for point lights.
+	{
+		fAttenuation = 1.0 / (lightAttenuation.x + (lightAttenuation.y * lightDistance) + (lightAttenuation.z * pow(lightDistance, 2)));
+	}
+
+	// Generate our light intesity factor,
+	vec3 lightIntensity = fAttenuation * lightColor;
+
+	// Generate our ambient reflection,
+	vec3 rAmbient = lightColor * materialCoefficients.x;
+
+	// Generate our diffuse reflection
+	vec3 rDiffuse = lightIntensity * materialCoefficients.y * max(0.f, dot(normalDirection, lightDirection));
+
+	// Generate our specular reflection
+	vec3 reflectDirection = normalize(reflect(- lightDirection, normalDirection));
+	vec3 rSpecular = vec3(0.f, 0.f, 0.f);
+
+	if (dot(normalDirection, lightDirection) > 0.f)
+	{
+		rSpecular = lightIntensity * materialCoefficients.z * pow(max(0.f, dot(reflectDirection, eyeDirection)), materialCoefficients.w);
+	}
+
+	color = (rSpecular + rDiffuse + rAmbient) * v_color;
+}
