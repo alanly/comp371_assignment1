@@ -19,8 +19,7 @@ class Model
 {
 public:
 	// @TODO 4 - It could be a good idea to allow passing a parent model in the constructor
-	Model();
-	Model(Model* parent);
+	Model(Model* parent = NULL);
 	virtual ~Model();
 
 	virtual void Update(float dt) = 0;
@@ -33,11 +32,15 @@ public:
 	void SetPosition(glm::vec3 position);
 	void SetScaling(glm::vec3 scaling);
 	void SetRotation(glm::vec3 axis, float angleDegrees);
+	void SetMaterialCoefficients(glm::vec4 coefficients);
 
 	glm::vec3 GetPosition() const		{ return mPosition; }
 	glm::vec3 GetScaling() const		{ return mScaling; }
 	glm::vec3 GetRotationAxis() const	{ return mRotationAxis; }
 	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
+
+	// Expressed as (ka, kd, ks, n)
+	glm::vec4 GetMaterialCoefficients() { return mMaterialCoefficients; }
 
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token) = 0;
@@ -47,6 +50,8 @@ protected:
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
+
+	glm::vec4 mMaterialCoefficients;
 
 	// @TODO 4 - You may want to add a parent object for the hierarchical modeling
 	Model* parent;

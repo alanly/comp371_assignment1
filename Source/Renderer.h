@@ -41,11 +41,21 @@ public:
 	static unsigned int GetShaderProgramID() { return sShaderProgramID[sCurrentShader]; }
 	static void SetShader(ShaderType type);
 
+	static unsigned int GetShaderLightPositionID() { return sShaderLightPositionID; }
+	static unsigned int GetShaderLightColorID() { return sShaderLightColorID; }
+	static unsigned int GetShaderLightAttenuationID() { return sShaderLightAttenuationID; }
+	static unsigned int GetShaderMaterialID() { return sShaderMaterialID; }
+
 private:
 	static GLFWwindow* spWindow;
 
 	static std::vector<unsigned int> sShaderProgramID;
 	static unsigned int sCurrentShader;
+
+	static unsigned int sShaderLightPositionID;
+	static unsigned int sShaderLightColorID;
+	static unsigned int sShaderLightAttenuationID;
+	static unsigned int sShaderMaterialID;
 
 };
 

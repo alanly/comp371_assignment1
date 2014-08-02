@@ -12,6 +12,7 @@
 
 class Camera;
 class Model;
+class Light;
 
 class World
 {
@@ -29,4 +30,6 @@ private:
 
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
+
+	std::vector<Light*> mLight;
 };

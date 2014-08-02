@@ -16,6 +16,9 @@
 #include "CubeModel.h"
 #include "VehicleModel.h"
 
+#include "PointLight.h"
+#include "DirectionalLight.h"
+
 #include <GLFW/glfw3.h>
 #include "EventManager.h"
 
@@ -28,6 +31,16 @@ World::World()
 	mCamera.push_back( new StaticCamera( vec3(3.0f, 4.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f) ) );
 	mCamera.push_back( new FirstPersonCamera( vec3(0.5f, 0.5f, 5.0f) ) );
 	mCurrentCamera = 0;
+
+	// Setup Light
+	mLight.push_back( new PointLight(glm::vec3(5.f, 5.f, -5.f)) );
+
+	// Get a handle for Light Attributes uniform
+	GLuint LightPositionID = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldLightPosition");
+	GLuint LightColorID = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");
+	GLuint LightAttenuationID = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightAttenuation");
+
+	
 
 	// The geometry should be loaded from a scene file
 }
@@ -102,7 +115,30 @@ void World::Draw()
 	glUseProgram(Renderer::GetShaderProgramID());
 
 	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectonTransform"); 
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectonTransform");
+
+	Light* currentLight = mLight[0];
+
+	// Set shader constants
+	glUniform4f(
+		Renderer::GetShaderLightPositionID(),
+		currentLight->GetLightPosition().x,
+		currentLight->GetLightPosition().y,
+		currentLight->GetLightPosition().z,
+		currentLight->GetLightPosition().w
+	);
+	glUniform3f(
+		Renderer::GetShaderLightColorID(),
+		currentLight->GetLightColor().r,
+		currentLight->GetLightColor().g, 
+		currentLight->GetLightColor().b
+	);
+	glUniform3f(
+		Renderer::GetShaderLightAttenuationID(),
+		currentLight->GetLightCoefficients().x,
+		currentLight->GetLightCoefficients().y,
+		currentLight->GetLightCoefficients().z
+	);
 
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
@@ -110,6 +146,14 @@ void World::Draw()
 		// Send the view projection constants to the shader
 		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+		glUniform4f(
+			Renderer::GetShaderMaterialID(), 
+			(*it)->GetMaterialCoefficients().x,
+			(*it)->GetMaterialCoefficients().y,
+			(*it)->GetMaterialCoefficients().z,
+			(*it)->GetMaterialCoefficients().w
+		);
 		
 		// Draw model
 		(*it)->Draw();

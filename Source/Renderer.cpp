@@ -56,9 +56,18 @@ void Renderer::Initialize()
 
 	// Loading Shaders
 	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/SolidColor.fragmentshader" ));
-	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/BlueColor.fragmentshader" ));
+	//sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/BlueColor.fragmentshader" ));
+	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Phong.vertexshader", "../Source/Shaders/Phong.fragmentshader" ));
+	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Gouraud.vertexshader", "../Source/Shaders/Gouraud.fragmentshader" ));
 	sCurrentShader = 0;
 
+	// Get a handle for Light Attributes uniform
+	sShaderLightPositionID    = glGetUniformLocation(GetShaderProgramID(), "WorldLightPosition");
+	sShaderLightColorID       = glGetUniformLocation(GetShaderProgramID(), "lightColor");
+	sShaderLightAttenuationID = glGetUniformLocation(GetShaderProgramID(), "lightAttenuation");
+
+	// Get a handle for Material Attributes uniform
+	sShaderMaterialID = glGetUniformLocation(GetShaderProgramID(), "materialCoefficients");
 }
 
 void Renderer::Shutdown()

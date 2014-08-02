@@ -12,11 +12,7 @@
 
 using namespace std;
 
-Model::Model() : parent(NULL),mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f)
-{
-}
-
-Model::Model(Model* parent) : parent(parent),mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f)
+Model::Model(Model* parent) : parent(parent),mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mMaterialCoefficients(0.2f, 0.8f, 0.2f, 50.f)
 {
 }
 
@@ -143,4 +139,9 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees)
 {
 	mRotationAxis = axis;
 	mRotationAngleInDegrees = angleDegrees;
+}
+
+void Model::SetMaterialCoefficients(glm::vec4 coefficients)
+{
+	mMaterialCoefficients = coefficients;
 }
