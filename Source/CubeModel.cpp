@@ -15,12 +15,7 @@
 
 using namespace glm;
 
-CubeModel::CubeModel(vec3 size)
-{
-	Initialize(NULL, size);
-}
-
-CubeModel::CubeModel(Model* parent, vec3 size)
+CubeModel::CubeModel(vec3 size, Model* parent)
 {
 	Initialize(parent, size);
 }

@@ -14,8 +14,7 @@ class CubeModel : public Model
 {
 public:
 	// @TODO 4 - It could be a good idea to allow passing a parent model in the constructor
-	CubeModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
-	CubeModel(Model* parent, glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	CubeModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), Model* parent = NULL);
 	virtual ~CubeModel();
 
 	virtual void Update(float dt);
