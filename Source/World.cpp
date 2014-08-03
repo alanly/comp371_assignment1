@@ -45,7 +45,6 @@ World::~World()
 	{
 		delete *it;
 	}
-
 	mModel.clear();
 
 	// Camera
@@ -54,6 +53,13 @@ World::~World()
 		delete *it;
 	}
 	mCamera.clear();
+
+	// Lights
+	for (vector<Light*>::iterator it = mLight.begin(); it < mLight.end(); ++it)
+	{
+		delete *it;
+	}
+	mLight.clear();
 }
 	
 void World::Update(float dt)
