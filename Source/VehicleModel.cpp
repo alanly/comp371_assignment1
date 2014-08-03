@@ -23,25 +23,25 @@ VehicleModel::VehicleModel() : mPropellerRotAngleInDegrees(0.0f)
 	cubes.push_back(fuselage);
 
 	// All direct children of the fuselage (i.e. components that are immediately attached to the fuselage)
-	CubeModel* wing = new CubeModel(fuselage, glm::vec3(5.0f, 0.125f, 1.0f));
+	CubeModel* wing = new CubeModel(glm::vec3(5.0f, 0.125f, 1.0f), fuselage);
 	wing->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	cubes.push_back(wing);
 
-	CubeModel* nose = new CubeModel(fuselage, glm::vec3(0.25f, 0.25f, 0.25f));
+	CubeModel* nose = new CubeModel(glm::vec3(0.25f, 0.25f, 0.25f), fuselage);
 	nose->SetPosition(glm::vec3(0.0f, 0.0f, 1.625f));
 	cubes.push_back(nose);
 	
-	CubeModel* tailfin = new CubeModel(fuselage, glm::vec3(0.125f, 1.0f, 1.0f));
+	CubeModel* tailfin = new CubeModel(glm::vec3(0.125f, 1.0f, 1.0f), fuselage);
 	tailfin->SetPosition(glm::vec3(0.0f, 0.5f, -1.5f));
 	tailfin->SetRotation(glm::vec3(-1.0f, 0.0f, 0.0f), 25.0f);
 	cubes.push_back(tailfin);
 	
 	// The properllers which are child components of the wing section.
-	CubeModel* leftPropeller = new CubeModel(wing, glm::vec3(0.0625f, 1.0f, 0.0625f));
+	CubeModel* leftPropeller = new CubeModel(glm::vec3(0.0625f, 1.0f, 0.0625f), wing);
 	leftPropeller->SetPosition(glm::vec3(-1.5f, 0.0f, 0.53125f));
 	cubes.push_back(leftPropeller);
 
-	CubeModel* rightPropeller = new CubeModel(wing, glm::vec3(0.0625f, 1.0f, 0.0625f));
+	CubeModel* rightPropeller = new CubeModel(glm::vec3(0.0625f, 1.0f, 0.0625f), wing);
 	rightPropeller->SetPosition(glm::vec3(1.5f, 0.0f, 0.53125f));
 	cubes.push_back(rightPropeller);
 }
