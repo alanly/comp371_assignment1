@@ -30,6 +30,11 @@ unsigned int Renderer::sCurrentShader;
 
 GLFWwindow* Renderer::spWindow = NULL;
 
+unsigned int Renderer::sShaderLightPositionID;
+unsigned int Renderer::sShaderLightColorID;
+unsigned int Renderer::sShaderLightAttenuationID;
+unsigned int Renderer::sShaderMaterialID;
+
 
 void Renderer::Initialize()
 {
