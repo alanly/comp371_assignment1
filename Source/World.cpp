@@ -33,14 +33,7 @@ World::World()
 	mCurrentCamera = 0;
 
 	// Setup Light
-	mLight.push_back( new PointLight(glm::vec3(5.f, 5.f, -5.f)) );
-
-	// Get a handle for Light Attributes uniform
-	GLuint LightPositionID = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldLightPosition");
-	GLuint LightColorID = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");
-	GLuint LightAttenuationID = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightAttenuation");
-
-	
+	mLight.push_back( new PointLight(glm::vec3(5.f, 5.f, -5.f)) );	
 
 	// The geometry should be loaded from a scene file
 }
