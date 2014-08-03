@@ -60,7 +60,7 @@ void Renderer::Initialize()
     glDepthFunc(GL_LESS); 
 
 	// Loading Shaders
-	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/SolidColor.fragmentshader" ));
+	//sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/SolidColor.fragmentshader" ));
 	//sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/SolidColor.vertexshader", "../Source/Shaders/BlueColor.fragmentshader" ));
 	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Phong.vertexshader", "../Source/Shaders/Phong.fragmentshader" ));
 	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Gouraud.vertexshader", "../Source/Shaders/Gouraud.fragmentshader" ));
@@ -100,6 +100,11 @@ void Renderer::EndFrame()
 {
 	// Swap buffers
 	glfwSwapBuffers(spWindow);
+
+	if (glGetError() != GL_NO_ERROR)
+	{
+		fprintf(stderr, "OpengGL error %d", glGetError());
+	}
 }
 
 void Renderer::SetShader(ShaderType type)
