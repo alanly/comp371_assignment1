@@ -116,28 +116,13 @@ void World::Draw()
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectonTransform");
 
-	Light* currentLight = mLight[0];
+	// Handles for transformation matrices.
+	GLuint WorldMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
+	GLuint ViewMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewTransform");
+	GLuint ProjMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ProjectonTransform");
 
-	// Set shader constants
-	glUniform4f(
-		Renderer::GetShaderLightPositionID(),
-		currentLight->GetLightPosition().x,
-		currentLight->GetLightPosition().y,
-		currentLight->GetLightPosition().z,
-		currentLight->GetLightPosition().w
-	);
-	glUniform3f(
-		Renderer::GetShaderLightColorID(),
-		currentLight->GetLightColor().r,
-		currentLight->GetLightColor().g, 
-		currentLight->GetLightColor().b
-	);
-	glUniform3f(
-		Renderer::GetShaderLightAttenuationID(),
-		currentLight->GetLightCoefficients().x,
-		currentLight->GetLightCoefficients().y,
-		currentLight->GetLightCoefficients().z
-	);
+	// Get pointer to the current light. (We'll use one light for now.)
+	Light* currentLight = mLight[0];
 
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
@@ -146,6 +131,32 @@ void World::Draw()
 		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
+		glUniformMatrix4fv(WorldMatrixID, 1, GL_FALSE, &(*it)->GetWorldMatrix()[0][0]);
+		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
+		glUniformMatrix4fv(ProjMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
+
+		// Set shader constants for the lighting
+		glUniform4f(
+			Renderer::GetShaderLightPositionID(),
+			currentLight->GetLightPosition().x,
+			currentLight->GetLightPosition().y,
+			currentLight->GetLightPosition().z,
+			currentLight->GetLightPosition().w
+		);
+		glUniform3f(
+			Renderer::GetShaderLightColorID(),
+			currentLight->GetLightColor().r,
+			currentLight->GetLightColor().g, 
+			currentLight->GetLightColor().b
+		);
+		glUniform3f(
+			Renderer::GetShaderLightAttenuationID(),
+			currentLight->GetLightCoefficients().x,
+			currentLight->GetLightCoefficients().y,
+			currentLight->GetLightCoefficients().z
+		);
+
+		// Set the material coefficients for this model.
 		glUniform4f(
 			Renderer::GetShaderMaterialID(), 
 			(*it)->GetMaterialCoefficients().x,
