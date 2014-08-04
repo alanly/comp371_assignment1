@@ -117,7 +117,6 @@ void World::Draw()
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectonTransform");
 
 	// Handles for transformation matrices.
-	GLuint WorldMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 	GLuint ViewMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewTransform");
 	GLuint ProjMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ProjectonTransform");
 
@@ -131,7 +130,6 @@ void World::Draw()
 		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
-		glUniformMatrix4fv(WorldMatrixID, 1, GL_FALSE, &(*it)->GetWorldMatrix()[0][0]);
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
 		glUniformMatrix4fv(ProjMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
 
