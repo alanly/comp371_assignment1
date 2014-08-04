@@ -53,6 +53,9 @@
     <None Include="..\Source\Shaders\Gouraud.fragmentshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\Scenes\VehicleSonicBoomTest.scene">
+      <Filter>Resource Files\Scenes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\EventManager.cpp">
@@ -94,6 +97,9 @@
     <ClCompile Include="..\Source\DirectionalLight.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\SphereModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\EventManager.h">
@@ -134,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\DirectionalLight.h">
       <Filter>Source Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SphereModel.h">
+      <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\Scenes\CoordinateSystem.scene" />
+    <None Include="..\Scenes\VehicleSonicBoomTest.scene" />
     <None Include="..\Scenes\VehicleTest.scene" />
     <None Include="..\Source\Shaders\BlueColor.fragmentshader" />
     <None Include="..\Source\Shaders\Gouraud.fragmentshader" />
@@ -112,6 +113,7 @@
     <ClCompile Include="..\Source\FirstPersonCamera.cpp" />
     <ClCompile Include="..\Source\Light.cpp" />
     <ClCompile Include="..\Source\PointLight.cpp" />
+    <ClCompile Include="..\Source\SphereModel.cpp" />
     <ClCompile Include="..\Source\StaticCamera.cpp" />
     <ClCompile Include="..\Source\EventManager.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
@@ -128,6 +130,7 @@
     <ClInclude Include="..\Source\Light.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\PointLight.h" />
+    <ClInclude Include="..\Source\SphereModel.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
     <ClInclude Include="..\Source\Model.h" />
