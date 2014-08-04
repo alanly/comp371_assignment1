@@ -15,6 +15,7 @@
 
 #include "CubeModel.h"
 #include "VehicleModel.h"
+#include "SphereModel.h"
 
 #include "PointLight.h"
 #include "DirectionalLight.h"
@@ -205,6 +206,13 @@ void World::LoadScene(const char * scene_path)
 				VehicleModel* vehicle = new VehicleModel();
 				vehicle->Load(iss);
 				mModel.push_back(vehicle);
+			}
+			else if( result == "sphere" )
+			{
+				// Box attributes
+				SphereModel* sphere = new SphereModel();
+				sphere->Load(iss);
+				mModel.push_back(sphere);
 			}
 			else if ( result.empty() == false && result[0] == '#')
 			{
