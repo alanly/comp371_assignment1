@@ -34,7 +34,8 @@ World::World()
 	mCurrentCamera = 0;
 
 	// Setup Light
-	mLight.push_back( new PointLight(glm::vec3(5.f, 5.f, -5.f)) );	
+	mLight.push_back( new PointLight(glm::vec3(0.f, 7.5f, 5.f)) );
+	//mLight.push_back( new DirectionalLight(glm::vec3(0.f, -1.f, -5.f)) );
 
 	// The geometry should be loaded from a scene file
 }
