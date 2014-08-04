@@ -22,3 +22,8 @@ position = 0.0  0 0
 name	 = "BabyPlane"
 scaling  = 0.4 0.4 0.4
 position = 4.0  0 0
+
+[Sphere]
+name     = "The Sphere"
+scaling  = 0.75 0.75 0.75
+position = 0.0 3.0 -3.0
