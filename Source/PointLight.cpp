@@ -1,12 +1,30 @@
 #include "PointLight.h"
 
 
+PointLight::PointLight()
+{
+}
+
+
 PointLight::PointLight(glm::vec3 position)
 {
-	lPosition = glm::vec4(position, 1.f);
+	SetLightPosition(
+		position.x,
+		position.y,
+		position.z
+	);
 }
 
 
 PointLight::~PointLight(void)
 {
+}
+
+
+void PointLight::SetLightPosition(float x, float y, float z)
+{
+	lPosition.x = x;
+	lPosition.y = y;
+	lPosition.z = z;
+	lPosition.w = 1.f;
 }

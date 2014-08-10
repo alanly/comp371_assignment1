@@ -1,6 +1,9 @@
 #include "Light.h"
 
 
+using namespace std;
+
+
 Light::Light(void)
 {
 	lColor = glm::vec3(1.f, 1.f, 1.f);
@@ -12,17 +15,78 @@ Light::~Light(void)
 {
 }
 
-glm::vec3 Light::GetLightColor()
+void Light::Load(ci_istringstream& iss)
 {
-	return lColor;
+	ci_string line;
+
+	// Parse model line by line
+	while(std::getline(iss, line))
+	{
+		// Splitting line into tokens
+		ci_istringstream strstr(line);
+		istream_iterator<ci_string, char, ci_char_traits> it(strstr);
+		istream_iterator<ci_string, char, ci_char_traits> end;
+		vector<ci_string> token(it, end);
+
+		if (ParseLine(token) == false)
+		{
+			fprintf(stderr, "Error loading scene file... token:  %s!", token[0]);
+			getchar();
+			exit(-1);
+		}
+	}
 }
 
-glm::vec3 Light::GetLightCoefficients()
+bool Light::ParseLine(const std::vector<ci_string> &token)
 {
-	return lCoefficients;
-}
+	if (token.empty() == false)
+	{
+		if (token[0].empty() == false && token[0][0] == '#')
+		{
+			return true;
+		}
 
-glm::vec4 Light::GetLightPosition()
-{
-	return lPosition;
+		if (token[0] == "name")
+		{
+			assert(token.size() > 2);
+			assert(token[1] == "=");
+
+			lName = token[2];
+		}
+		else if (token[0] == "position")
+		{
+			assert(token.size() > 4);
+			assert(token[1] == "=");
+
+			SetLightPosition(
+				static_cast<float>(atof(token[2].c_str())),
+				static_cast<float>(atof(token[3].c_str())),
+				static_cast<float>(atof(token[4].c_str()))
+			);
+		}
+		else if (token[0] == "color")
+		{
+			assert(token.size() > 4);
+			assert(token[1] == "=");
+
+			lColor.x = static_cast<float>(atof(token[2].c_str()));
+			lColor.y = static_cast<float>(atof(token[3].c_str()));
+			lColor.z = static_cast<float>(atof(token[4].c_str()));
+		}
+		else if (token[0] == "coefficients")
+		{
+			assert(token.size() > 4);
+			assert(token[1] == "=");
+
+			lCoefficients.x = static_cast<float>(atof(token[2].c_str()));
+			lCoefficients.y = static_cast<float>(atof(token[3].c_str()));
+			lCoefficients.z = static_cast<float>(atof(token[4].c_str()));
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

@@ -27,3 +27,11 @@ position = 4.0  0 0
 name     = "The Sphere"
 scaling  = 0.75 0.75 0.75
 position = 0.0 3.0 -3.0
+
+[PointLight]
+name     = "Point Light"
+position = 0.0 7.5 5.0
+
+[DirectionalLight]
+name     = "Directional Light"
+position = 0.0 -1.0 -5.0

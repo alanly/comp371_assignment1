@@ -34,8 +34,9 @@ World::World()
 	mCurrentCamera = 0;
 
 	// Setup Light
-	mLight.push_back( new PointLight(glm::vec3(0.f, 7.5f, 5.f)) );
+	//mLight.push_back( new PointLight(glm::vec3(0.f, 7.5f, 5.f)) );
 	//mLight.push_back( new DirectionalLight(glm::vec3(0.f, -1.f, -5.f)) );
+	mCurrentLight = 0;
 
 	// The geometry should be loaded from a scene file
 }
@@ -97,6 +98,18 @@ void World::Update(float dt)
 		Renderer::SetShader(SHADER_BLUE);
 	}
 
+	// L to change Light
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_L) == GLFW_PRESS)
+	{
+		mCurrentLight++;
+
+		if (mCurrentLight >= mLight.size()) {
+			mCurrentLight = 0;
+		}
+
+		printf("Using light: %s\n", mLight[mCurrentLight]->GetLightName().c_str());
+	}
+
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
 
@@ -123,7 +136,7 @@ void World::Draw()
 	GLuint ProjMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ProjectonTransform");
 
 	// Get pointer to the current light. (We'll use one light for now.)
-	Light* currentLight = mLight[0];
+	Light* currentLight = mLight[mCurrentLight];
 
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
@@ -214,6 +227,18 @@ void World::LoadScene(const char * scene_path)
 				SphereModel* sphere = new SphereModel();
 				sphere->Load(iss);
 				mModel.push_back(sphere);
+			}
+			else if ( result == "pointlight" )
+			{
+				PointLight* light = new PointLight();
+				light->Load(iss);
+				mLight.push_back(light);
+			}
+			else if ( result == "directionallight" )
+			{
+				DirectionalLight* light = new DirectionalLight();
+				light->Load(iss);
+				mLight.push_back(light);
 			}
 			else if ( result.empty() == false && result[0] == '#')
 			{

@@ -32,4 +32,5 @@ private:
 	unsigned int mCurrentCamera;
 
 	std::vector<Light*> mLight;
+	unsigned int mCurrentLight;
 };
