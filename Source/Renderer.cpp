@@ -30,10 +30,9 @@ unsigned int Renderer::sCurrentShader;
 
 GLFWwindow* Renderer::spWindow = NULL;
 
-unsigned int Renderer::sShaderLightPositionID;
-unsigned int Renderer::sShaderLightColorID;
-unsigned int Renderer::sShaderLightAttenuationID;
 unsigned int Renderer::sShaderMaterialID;
+
+unsigned int Renderer::sLightSizeUniformID;
 unsigned int Renderer::sLightPositionsUniformID;
 unsigned int Renderer::sLightColorsUniformID;
 unsigned int Renderer::sLightAttenuationsUniformID;
@@ -68,15 +67,12 @@ void Renderer::Initialize()
 	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Phong.vertexshader", "../Source/Shaders/Phong.fragmentshader" ));
 	sShaderProgramID.push_back(LoadShaders( "../Source/Shaders/Gouraud.vertexshader", "../Source/Shaders/Gouraud.fragmentshader" ));
 	sCurrentShader = 0;
-
-	// Get a handle for Light Attributes uniform
-	sShaderLightPositionID    = glGetUniformLocation(GetShaderProgramID(), "WorldLightPosition");
-	sShaderLightColorID       = glGetUniformLocation(GetShaderProgramID(), "lightColor");
-	sShaderLightAttenuationID = glGetUniformLocation(GetShaderProgramID(), "lightAttenuation");
-
+	
 	// Get a handle for Material Attributes uniform
 	sShaderMaterialID = glGetUniformLocation(GetShaderProgramID(), "materialCoefficients");
 
+	// Get handles for Light attributes.
+	sLightSizeUniformID         = glGetUniformLocation(GetShaderProgramID(), "NumLights");
 	sLightPositionsUniformID    = glGetUniformLocation(GetShaderProgramID(), "LightPositions");
 	sLightColorsUniformID       = glGetUniformLocation(GetShaderProgramID(), "LightColors");
 	sLightAttenuationsUniformID = glGetUniformLocation(GetShaderProgramID(), "LightAttenuations");
@@ -84,13 +80,12 @@ void Renderer::Initialize()
 
 void Renderer::Shutdown()
 {
-		// Shaders
+	// Shaders
 	for (vector<unsigned int>::iterator it = sShaderProgramID.begin(); it < sShaderProgramID.end(); ++it)
 	{
 		glDeleteProgram(*it);
 	}
 	sShaderProgramID.clear();
-
 
 	// Managed by EventManager
 	spWindow = NULL;

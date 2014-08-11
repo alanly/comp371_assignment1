@@ -13,7 +13,7 @@ in vec3 v_color;		 // vertex color: also diffuse color
 
 in vec3 normal;          // Transformed normal in View Space
 in vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
-in vec4 lightVector[2];     // Vector from the vertex to the Light in View Space
+in vec4 lightVector[13];     // Vector from the vertex to the Light in View Space
 						 // Length of lightVector is the distance between light and vertex
 						 // if w = 1: Point light, if w = 0: directional light
 

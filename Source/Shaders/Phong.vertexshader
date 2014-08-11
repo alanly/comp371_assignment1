@@ -10,7 +10,7 @@ out vec3 v_color;
 
 out vec3 normal;          // Transformed normal in View Space
 out vec3 eyeVector;       // Vector from the vertex to the Camera in View Space
-out vec4 lightVector[2];     // Vector from the vertex to the Light in View Space
+out vec4 lightVector[13];     // Vector from the vertex to the Light in View Space
 						  // Length of lightVector is the distance between light and vertex
 
 // Uniform
@@ -20,9 +20,10 @@ uniform mat4 ViewTransform;
 uniform mat4 ProjectonTransform;
 
 // Lights
-uniform vec4 LightPositions[2];
-uniform vec3 LightColors[2];
-uniform vec3 LightAttenuations[2];
+uniform int  NumLights;
+uniform vec4 LightPositions[50];
+uniform vec3 LightColors[50];
+uniform vec3 LightAttenuations[50];
 
 
 void main()
@@ -48,7 +49,7 @@ void main()
 	eyeVector = normalize( -(vertexPosition_viewspace) );
 
 	// lightVector = ...
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < NumLights; i++) {
 		if (LightPositions[i].w > 0) {
 			lightVector[i] = (ViewTransform * LightPositions[i]) - vec4(vertexPosition_viewspace, 0);
 		} else {

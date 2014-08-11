@@ -34,8 +34,6 @@ World::World()
 	mCurrentCamera = 0;
 
 	// Setup Light
-	//mLight.push_back( new PointLight(glm::vec3(0.f, 7.5f, 5.f)) );
-	//mLight.push_back( new DirectionalLight(glm::vec3(0.f, -1.f, -5.f)) );
 	mCurrentLight = 0;
 
 	// The geometry should be loaded from a scene file
@@ -135,58 +133,46 @@ void World::Draw()
 	GLuint ViewMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewTransform");
 	GLuint ProjMatrixID = glGetUniformLocation(Renderer::GetShaderProgramID(), "ProjectonTransform");
 
-	// Get pointer to the current light. (We'll use one light for now.)
-	Light* currentLight = mLight[mCurrentLight];
+	// Get the number of lights
+	int mLightSize = mLight.size();
 
-	GLfloat lightPositions[8] = {
-		mLight[0]->GetLightPosition().x, mLight[0]->GetLightPosition().y, mLight[0]->GetLightPosition().z, mLight[0]->GetLightPosition().w,
-		mLight[1]->GetLightPosition().x, mLight[1]->GetLightPosition().y, mLight[1]->GetLightPosition().z, mLight[1]->GetLightPosition().w
-	};
-	GLfloat lightColors[6] = {
-		mLight[0]->GetLightColor().x, mLight[0]->GetLightColor().y, mLight[0]->GetLightColor().z,
-		mLight[1]->GetLightColor().x, mLight[1]->GetLightColor().y, mLight[1]->GetLightColor().z
-	};
-	GLfloat lightCoefficients[6] = {
-		mLight[0]->GetLightCoefficients().x, mLight[0]->GetLightCoefficients().y, mLight[0]->GetLightCoefficients().z,
-		mLight[1]->GetLightCoefficients().x, mLight[1]->GetLightCoefficients().y, mLight[1]->GetLightCoefficients().z
-	};
+	// Declare the uniform pointers, holding our light values
+	GLfloat* lightPositions    = new GLfloat[mLightSize * 4];
+	GLfloat* lightColors       = new GLfloat[mLightSize * 3];
+	GLfloat* lightCoefficients = new GLfloat[mLightSize * 3];
+
+	// Populate with the light values
+	for (int i = 0; i < mLightSize; i++)
+	{
+		// Populate lightPositions (vec4)
+		for (int p = 0; p < 4; p++) {
+			lightPositions[(i * 4) + p] = mLight[i]->GetLightPosition()[p];
+		}
+
+		// Populate lightColors & lightCoefficients (vec3)
+		for (int c = 0; c < 3; c++) {
+			int index = (i * 3) + c;
+			lightColors[index] = mLight[i]->GetLightColor()[c];
+			lightCoefficients[index] = mLight[i]->GetLightCoefficients()[c];
+		}
+	}
 
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
-		// Send the view projection constants to the shader
+		// Send the view-projection matrices to the shader
 		mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 		glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
-
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
 		glUniformMatrix4fv(ProjMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
 
+		// Send the light properties to the shader
+		glUniform1i(Renderer::GetLightSizeUniformID(), mLightSize);
 		glUniform4fv(Renderer::GetLightPositionsUniformID(), 2, lightPositions);
 		glUniform3fv(Renderer::GetLightColorsUniformID(), 2, lightColors);
 		glUniform3fv(Renderer::GetLightAttenuationsUniformID(), 2, lightCoefficients);
-
-		// Set shader constants for the lighting
-		glUniform4f(
-			Renderer::GetShaderLightPositionID(),
-			currentLight->GetLightPosition().x,
-			currentLight->GetLightPosition().y,
-			currentLight->GetLightPosition().z,
-			currentLight->GetLightPosition().w
-		);
-		glUniform3f(
-			Renderer::GetShaderLightColorID(),
-			currentLight->GetLightColor().r,
-			currentLight->GetLightColor().g, 
-			currentLight->GetLightColor().b
-		);
-		glUniform3f(
-			Renderer::GetShaderLightAttenuationID(),
-			currentLight->GetLightCoefficients().x,
-			currentLight->GetLightCoefficients().y,
-			currentLight->GetLightCoefficients().z
-		);
-		
-		// Set the material coefficients for this model.
+				
+		// Send the material coefficients for this model.
 		glUniform4f(
 			Renderer::GetShaderMaterialID(), 
 			(*it)->GetMaterialCoefficients().x,
@@ -200,6 +186,10 @@ void World::Draw()
 	}
 
 	Renderer::EndFrame();
+
+	delete lightPositions;
+	delete lightColors;
+	delete lightCoefficients;
 }
 
 void World::LoadScene(const char * scene_path)
