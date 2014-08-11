@@ -90,3 +90,42 @@ bool Light::ParseLine(const std::vector<ci_string> &token)
 
 	return true;
 }
+
+
+void Light::Enlighten(unsigned int lightCount)
+{
+	// Determine our light ID.
+	unsigned int LIGHT_ID = GL_LIGHT0 + lightCount;
+
+	// Enable the light.
+	glEnable(GL_LIGHTING);
+	glEnable(LIGHT_ID);
+	glEnable(GL_NORMALIZE);
+
+	// What is this light model magic?
+	GLfloat lmKa[] = {0.0, 0.0, 0.0, 0.0 };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmKa);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
+	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
+
+	// But we don't want any spotlight stuff...
+	GLfloat spot_direction[] = {1.0, -1.0, -1.0 };
+	GLint spot_exponent = 30;
+	GLint spot_cutoff = 180;
+	glLightfv(LIGHT_ID, GL_SPOT_DIRECTION, spot_direction);
+	glLighti(LIGHT_ID, GL_SPOT_EXPONENT, spot_exponent);
+	glLighti(LIGHT_ID, GL_SPOT_CUTOFF, spot_cutoff);
+
+	// Set our light attenuation co-efficients.
+	glLightf(LIGHT_ID, GL_CONSTANT_ATTENUATION, lCoefficients.x);
+	glLightf(LIGHT_ID, GL_LINEAR_ATTENUATION, lCoefficients.y);
+	glLightf(LIGHT_ID, GL_QUADRATIC_ATTENUATION, lCoefficients.z);
+
+	// Set the light position.
+	glLightfv(LIGHT_ID, GL_POSITION, &lPosition[0]);
+
+	// Set the light colour for ambient, diffuse, and specular.
+	glLightfv(LIGHT_ID, GL_AMBIENT, &lColor[0]);
+	glLightfv(LIGHT_ID, GL_DIFFUSE, &lColor[0]);
+	glLightfv(LIGHT_ID, GL_SPECULAR, &lColor[0]);
+}

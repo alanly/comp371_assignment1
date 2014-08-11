@@ -34,6 +34,9 @@ unsigned int Renderer::sShaderLightPositionID;
 unsigned int Renderer::sShaderLightColorID;
 unsigned int Renderer::sShaderLightAttenuationID;
 unsigned int Renderer::sShaderMaterialID;
+unsigned int Renderer::sLightPositionsUniformID;
+unsigned int Renderer::sLightColorsUniformID;
+unsigned int Renderer::sLightAttenuationsUniformID;
 
 
 void Renderer::Initialize()
@@ -73,6 +76,10 @@ void Renderer::Initialize()
 
 	// Get a handle for Material Attributes uniform
 	sShaderMaterialID = glGetUniformLocation(GetShaderProgramID(), "materialCoefficients");
+
+	sLightPositionsUniformID    = glGetUniformLocation(GetShaderProgramID(), "LightPositions");
+	sLightColorsUniformID       = glGetUniformLocation(GetShaderProgramID(), "LightColors");
+	sLightAttenuationsUniformID = glGetUniformLocation(GetShaderProgramID(), "LightAttenuations");
 }
 
 void Renderer::Shutdown()

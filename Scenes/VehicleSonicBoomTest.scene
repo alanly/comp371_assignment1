@@ -3,10 +3,7 @@
 [Cube]
 name     = "Ground"
 scaling  = 100.0 1.0 100.0
-#position = 0.0 -0.5 0.0
 position = 0.0 -10.0 0.0
-#rotation = 0.0 0.0 1.0 0.0
-rotation = 1.0 0.0 0.0 25.0
 
 [Vehicle]
 name	 = "BigPlane"
@@ -55,8 +52,8 @@ position = 4.5 0.0 -2.0
 
 [PointLight]
 name     = "Point Light"
-position = 0.0 7.5 5.0
+position = 0 0 10
 
-[DirectionalLight]
-name     = "Directional Light"
-position = 0.0 -1.0 -5.0
+[PointLight]
+name     = "Point Light"
+position = 0 0 -30

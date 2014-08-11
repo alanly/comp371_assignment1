@@ -4,6 +4,7 @@
 #include "ParsingHelper.h"
 #include <vector>
 #include <GLM/glm.hpp>
+#include <GLFW/glfw3.h>
 
 
 class Light
@@ -26,6 +27,8 @@ public:
 	virtual void SetLightPosition(float x, float y, float z) = 0;
 
 	void Load(ci_istringstream& iss);
+
+	void Enlighten(unsigned int lightCount = 0);
 
 protected:
 	bool ParseLine(const std::vector<ci_string> &token);

@@ -46,6 +46,10 @@ public:
 	static unsigned int GetShaderLightAttenuationID() { return sShaderLightAttenuationID; }
 	static unsigned int GetShaderMaterialID() { return sShaderMaterialID; }
 
+	static unsigned int GetLightPositionsUniformID() { return sLightPositionsUniformID; }
+	static unsigned int GetLightColorsUniformID() { return sLightColorsUniformID; }
+	static unsigned int GetLightAttenuationsUniformID() { return sLightAttenuationsUniformID; }
+
 private:
 	static GLFWwindow* spWindow;
 
@@ -57,5 +61,8 @@ private:
 	static unsigned int sShaderLightAttenuationID;
 	static unsigned int sShaderMaterialID;
 
+	static unsigned int sLightPositionsUniformID;
+	static unsigned int sLightColorsUniformID;
+	static unsigned int sLightAttenuationsUniformID;
 };
 

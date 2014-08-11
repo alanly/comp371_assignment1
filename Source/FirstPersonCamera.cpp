@@ -88,7 +88,7 @@ void FirstPersonCamera::Update(float dt)
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_PAGE_UP) == GLFW_PRESS)
 	{
 		keySpeed += 2 * dt;
-		mouseSpeed -= 0.75 * dt;
+		mouseSpeed -= 0.75f * dt;
 
 		printf("(keySpeed, mouseSpeed) = (%f, %f)\n", keySpeed, mouseSpeed);
 	}
@@ -96,7 +96,7 @@ void FirstPersonCamera::Update(float dt)
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
 	{
 		keySpeed -= 2 * dt;
-		mouseSpeed += 0.75 * dt;
+		mouseSpeed += 0.75f * dt;
 
 		printf("(keySpeed, mouseSpeed) = (%f, %f)\n", keySpeed, mouseSpeed);
 	}

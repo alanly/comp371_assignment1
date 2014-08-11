@@ -138,6 +138,19 @@ void World::Draw()
 	// Get pointer to the current light. (We'll use one light for now.)
 	Light* currentLight = mLight[mCurrentLight];
 
+	GLfloat lightPositions[8] = {
+		mLight[0]->GetLightPosition().x, mLight[0]->GetLightPosition().y, mLight[0]->GetLightPosition().z, mLight[0]->GetLightPosition().w,
+		mLight[1]->GetLightPosition().x, mLight[1]->GetLightPosition().y, mLight[1]->GetLightPosition().z, mLight[1]->GetLightPosition().w
+	};
+	GLfloat lightColors[6] = {
+		mLight[0]->GetLightColor().x, mLight[0]->GetLightColor().y, mLight[0]->GetLightColor().z,
+		mLight[1]->GetLightColor().x, mLight[1]->GetLightColor().y, mLight[1]->GetLightColor().z
+	};
+	GLfloat lightCoefficients[6] = {
+		mLight[0]->GetLightCoefficients().x, mLight[0]->GetLightCoefficients().y, mLight[0]->GetLightCoefficients().z,
+		mLight[1]->GetLightCoefficients().x, mLight[1]->GetLightCoefficients().y, mLight[1]->GetLightCoefficients().z
+	};
+
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it)
 	{
@@ -147,6 +160,10 @@ void World::Draw()
 
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetViewMatrix()[0][0]);
 		glUniformMatrix4fv(ProjMatrixID, 1, GL_FALSE, &mCamera[mCurrentCamera]->GetProjectionMatrix()[0][0]);
+
+		glUniform4fv(Renderer::GetLightPositionsUniformID(), 2, lightPositions);
+		glUniform3fv(Renderer::GetLightColorsUniformID(), 2, lightColors);
+		glUniform3fv(Renderer::GetLightAttenuationsUniformID(), 2, lightCoefficients);
 
 		// Set shader constants for the lighting
 		glUniform4f(
@@ -168,7 +185,7 @@ void World::Draw()
 			currentLight->GetLightCoefficients().y,
 			currentLight->GetLightCoefficients().z
 		);
-
+		
 		// Set the material coefficients for this model.
 		glUniform4f(
 			Renderer::GetShaderMaterialID(), 
@@ -177,7 +194,7 @@ void World::Draw()
 			(*it)->GetMaterialCoefficients().z,
 			(*it)->GetMaterialCoefficients().w
 		);
-		
+
 		// Draw model
 		(*it)->Draw();
 	}
