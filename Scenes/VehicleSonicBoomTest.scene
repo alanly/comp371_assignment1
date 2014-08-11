@@ -52,8 +52,16 @@ position = 4.5 0.0 -2.0
 
 [PointLight]
 name     = "Point Light"
-position = 0 0 10
+position = 0 0 100
 
 [PointLight]
 name     = "Point Light"
-position = 0 0 -30
+position = 0 0 -100
+
+[PointLight]
+name     = "Point Light"
+position = 100 0 0
+
+[PointLight]
+name     = "Point Light"
+position = -100 0 0

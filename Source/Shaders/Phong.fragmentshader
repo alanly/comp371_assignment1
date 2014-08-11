@@ -4,9 +4,9 @@
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 
-uniform vec3 LightColors[2];
-uniform vec3 LightAttenuations[2];
-
+uniform int  NumLights;
+uniform vec3 LightColors[50];
+uniform vec3 LightAttenuations[50];
 
 // Inputs
 in vec3 v_color;		 // vertex color: also diffuse color
@@ -39,7 +39,7 @@ void main()
 	vec3 specular;
 
 	// Calculate each light's effects on this fragment.
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < NumLights; i++)
 	{
 		// Calculate light specific values,
 		lightDistance = length(vec3(lightVector[i]));
