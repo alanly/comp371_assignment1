@@ -168,9 +168,9 @@ void World::Draw()
 
 		// Send the light properties to the shader
 		glUniform1i(Renderer::GetLightSizeUniformID(), mLightSize);
-		glUniform4fv(Renderer::GetLightPositionsUniformID(), 2, lightPositions);
-		glUniform3fv(Renderer::GetLightColorsUniformID(), 2, lightColors);
-		glUniform3fv(Renderer::GetLightAttenuationsUniformID(), 2, lightCoefficients);
+		glUniform4fv(Renderer::GetLightPositionsUniformID(), mLightSize, lightPositions);
+		glUniform3fv(Renderer::GetLightColorsUniformID(), mLightSize, lightColors);
+		glUniform3fv(Renderer::GetLightAttenuationsUniformID(), mLightSize, lightCoefficients);
 				
 		// Send the material coefficients for this model.
 		glUniform4f(
@@ -260,4 +260,6 @@ void World::LoadScene(const char * scene_path)
 	    }
 	}
 	input.close();
+
+	printf("%i Lights Loaded.\n", mLight.size());
 }
